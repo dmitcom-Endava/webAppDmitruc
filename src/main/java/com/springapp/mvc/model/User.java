@@ -1,31 +1,44 @@
 package com.springapp.mvc.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table (name="users")
 public class User {
-    private String name;
+    @Id
+    private Long Id;
+    @Column (name="name")
+    private String userName;
+    @Column (name ="password")
     private String password;
+    @Column (name ="gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Column (name="age")
+    private int age;
 
     public User(){
         //for hibernate
     }
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
-    public User(String name, String password, Gender gender) {
-        this.name = name;
+    public User(String userName, String password, Gender gender, int age) {
+        this.userName = userName;
         this.password = password;
         this.gender = gender;
+        this.age=age;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -36,6 +49,7 @@ public class User {
         this.password = password;
     }
 
+    @Enumerated(EnumType.STRING)
     public Gender getGender() {
         return gender;
     }
@@ -44,32 +58,44 @@ public class User {
         this.gender = gender;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
 
         User user = (User) o;
 
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (age != user.age) return false;
+        if (!userName.equals(user.userName)) return false;
+        if (!password.equals(user.password)) return false;
         return gender == user.gender;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        int result = userName.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + gender.hashCode();
+        result = 31 * result + age;
         return result;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "Id=" + Id +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", gender=" + gender +
+                ", age=" + age +
                 '}';
     }
 }
